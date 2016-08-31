@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -28,30 +29,76 @@ public class VerifyBrokenLinks {
 		driver.manage().window().maximize();
                 JavascriptExecutor js = (JavascriptExecutor) driver;
 		String id="null";
+                String loginText="";
                  WebElement textElement=null;
 		//driver.get("https://routhsrinivas.github.io/coursera-test/test/test.html");
-                driver.get("https://www.jabong.com/");
-                // driver.get("https://www.paypal.com/signin?country.x=IN&locale.x=en_IN");
+               // driver.get("https://www.jabong.com/");
+                 driver.get("https://www.paypal.com/signin?country.x=IN&locale.x=en_IN");
                // driver.get("http://localhost/paypal/Log%20in%20to%20your%20PayPal%20account.html");
                 //driver.findElement(By.xpath("//*[@id=\"Email\"]")).sendKeys("srinivas");
-                
               //  driver.findElement(By.xpath("//*[@id=\"next\"]")).click();
-
-                Boolean isPresent = driver.findElements(By.partialLinkText("Log In/log in/LogIn/login/Log In")).size() > 0;
-                 if(!isPresent)
+               try{
+                 Cookie cookie= driver.manage().getCookieNamed("JSESSIONID");
+System.out.println(cookie.getValue());
+               }
+               catch(Exception e){
+                  System.out.println(e); 
+               }
+                 try{
+                String ASPNET_SessionId = driver.manage().getCookieNamed("ASP.NET_SessionId").toString();
+ System.out.println(ASPNET_SessionId);
+                 }
+ catch(Exception e){
+                  System.out.println(e); 
+               }
+                //********* check for the password field if present no need for modal window checking
+                 WebElement pwd=null;
+                 try{
+                             pwd=driver.findElement(By.cssSelector("input[type='password']"));
+                 }
+                 catch(NoSuchElementException e){
+                     
+                 
+                             
+                   List<WebElement> anchors = driver.findElements(By.tagName("a"));
+                   for(int j=0;j< anchors.size();j++)
+                   {    
+                      if(anchors.get(j).isDisplayed())
+                      {
+                     if(anchors.get(j).getText().toLowerCase().equalsIgnoreCase("login"))
+                     {
+                         loginText=anchors.get(j).getText();
+                         break;
+                     }
+                     if(anchors.get(j).getText().toLowerCase().equalsIgnoreCase("signin"))
+                     {
+                         loginText=anchors.get(j).getText();
+                         break;
+                     }
+                     if(anchors.get(j).getText().toLowerCase().equalsIgnoreCase("log in"))
+                     {
+                         loginText=anchors.get(j).getText();
+                         break;
+                     }
+                     if(anchors.get(j).getText().toLowerCase().equalsIgnoreCase("sign in"))
+                     {
+                         loginText=anchors.get(j).getText();
+                         break;
+                     }
+                   } 
+                   }
+                Boolean isPresent = driver.findElements(By.partialLinkText(loginText)).size() > 0;
+                 if(isPresent)
                  {
                      try{
-                      driver.findElement(By.partialLinkText("Sign in || SIGN IN")).click();
+                      driver.findElement(By.partialLinkText(loginText)).click();
+                      pwd=driver.findElement(By.cssSelector("input[type='password']"));
                      }
-                     catch(NoSuchElementException e){
-                       System.out.println(e);
+                     catch(NoSuchElementException n){
+                       System.out.println(n);
                      }
                  }
-                else
-                 {
-                 driver.findElement(By.partialLinkText("Log")).click();
                  }
-                 
                  driver.switchTo().activeElement();
              
 		List<WebElement> inputFields = driver.findElements(By.tagName("input"));
@@ -80,8 +127,7 @@ public class VerifyBrokenLinks {
                         System.out.println(textElement.getTagName().toString());
                         if(textElement.isDisplayed())
                         {
-                             WebElement pwd=null;
-                             pwd=driver.findElement(By.cssSelector("input[type='password']"));
+                            
                              if(pwd.equals(textElement)){
 			textElement.sendKeys("password");
                         textElement.submit();
@@ -89,7 +135,6 @@ public class VerifyBrokenLinks {
                              }
                              else
                                  textElement.sendKeys("nitk@123.com");
-                             
 			//verifyLinkActive(url);
                         }
                     }
