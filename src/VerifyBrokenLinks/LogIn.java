@@ -26,12 +26,21 @@ public class LogIn {
     public String logInAction(WebDriver driver, String URL, MainInterface screenobj) {
         String id = "null", phishStatus="null";
         String loginText = "";
+        String Source_code="";
+        int totalURLScore=-1;
         WebElement textElement = null;
         String passwordAttribute = null;
         boolean pwdStatus=false;
         driver.get(URL);
+        Source_code=driver.getPageSource();
         screenobj.Screenshot(driver);
         SecondPage obj=new SecondPage();
+        HeuristicURLDetectionScore URLobj=new HeuristicURLDetectionScore();
+        try {
+             totalURLScore=URLobj.checkForNullLinks(URL, Source_code);
+        } catch (Exception ex) {
+            Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
+        }
         //********* check for the password field if present no need for modal window checking
         WebElement pwd = null;
         try {
@@ -71,7 +80,7 @@ public class LogIn {
                     }
                 }
             }
-            
+         
         }
 if(pwdStatus){
         List<WebElement> inputFields = driver.findElements(By.tagName("input"));
