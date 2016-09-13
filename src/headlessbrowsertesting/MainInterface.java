@@ -40,7 +40,7 @@ import org.openqa.selenium.remote.CapabilityType;
  */
 public class MainInterface {
     
-    int rowcount = 1, index=1;
+    int rowcount = 0, index=0;
     String v0 = "null", v1 = "null";
 
     public WebDriver Execute(String browser) {
@@ -50,8 +50,9 @@ public class MainInterface {
         //    FirefoxProfile p = new FirefoxProfile();
         //    p.setPreference("javascript.enabled", false);
 //driver = new FirefoxDriver(p);
-            DesiredCapabilities dc = new DesiredCapabilities();
+           DesiredCapabilities dc = new DesiredCapabilities();
 dc.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
+System.setProperty("webdriver.gecko.driver", "C:\\Users\\srinivas\\Documents\\NetBeansProjects\\jars important\\geckodriver.exe");
 driver = new FirefoxDriver(dc);
            //driver = new FirefoxDriver();
         }
@@ -111,7 +112,7 @@ driver = new FirefoxDriver(dc);
         try {
             BufferedReader br = new BufferedReader(new FileReader(URLs));
             String list = br.readLine();
-            while (list != null) {
+            while (list != null && !(list.equalsIgnoreCase(""))) {
                 WebDriver driver = null;
                 driver = obj.Execute("firefox");
                 LogIn obj2 = new LogIn();

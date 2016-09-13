@@ -18,7 +18,6 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  *
@@ -199,10 +198,15 @@ public class URLHeuristicScore {
             }
   }
    public String getPrimaryDomain(String URL, URLHeuristicScore obj ) throws URISyntaxException{
-    
+    try{
        String host = new URI(URL).getHost();
        InternetDomainName domainName = InternetDomainName.from(host);
     return domainName.topPrivateDomain().toString();
+    }
+    catch(Exception e){
+        System.out.println(e);
+        return "javascript or differentURL";
+    }
      }
     
     public int URLScoreInterface(WebDriver driver,String URL) throws URISyntaxException {
@@ -233,5 +237,14 @@ public class URLHeuristicScore {
              return 0;
     }
     
-    
+    public boolean domComparisonFirstSecond(String firstPageSource,String secondPageSource){
+         Document docFirst=Jsoup.parse(firstPageSource);
+         Document docSecond=Jsoup.parse(secondPageSource);
+        Elements elementsFirstPage = docFirst.getAllElements();
+        Elements elementsSecondPage = docSecond.getAllElements();
+        if(elementsFirstPage.equals(elementsSecondPage))
+        return true;
+        else return false;
+    }
+      
 }

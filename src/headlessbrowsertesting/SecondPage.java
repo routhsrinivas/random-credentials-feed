@@ -21,17 +21,19 @@ import org.openqa.selenium.WebElement;
  * @author srinivas
  */
 public class SecondPage {
-     public String secondPageLoginCheck(WebDriver driver, String pwdAttribute, String firstPageURL) {
+     public String secondPageLoginCheck(WebDriver driver, String pwdAttribute, String firstPageURL,String firstPageSource) {
          SecondPage obj=new SecondPage();
         String id = "null";
         String loginText = "";
         String secondPageURL="";
         WebElement textElement = null;
         WebElement pwd = null;
-        boolean status=false;
+        boolean status=true;
         int URLHeuristicScore=-1;
         secondPageURL=driver.getCurrentUrl();
          boolean primaryDomainCheck=false;
+        // String secondPageSource=driver.getPageSource();
+         URLHeuristicScore mainObj=new URLHeuristicScore();
          try {
               primaryDomainCheck=comparePrimarydomain(firstPageURL,secondPageURL,obj);
          } catch (URISyntaxException ex) {
@@ -39,51 +41,84 @@ public class SecondPage {
          }
          if(primaryDomainCheck)
          {
+             //<editor-fold defaultstate="collapsed" desc="comment">
+             //********** no identifiers in input fields and to check login status in second page
+             /* if(pwdAttribute.equalsIgnoreCase("null"))
+             {
+             if(mainObj.domComparisonFirstSecond(firstPageSource,secondPageSource))
+             {
+             try {
+             URLHeuristicScore=mainObj.URLScoreInterface(driver,secondPageURL);
+             } catch (URISyntaxException ex) {
+             Logger.getLogger(SecondPage.class.getName()).log(Level.SEVERE, null, ex);
+             }
+             driver.quit();
+             if(URLHeuristicScore!=1)
+             status=false;
+             else status=true;
+             }
+             else return "the webpage is Phishing based on successful logging in second page based on no identifier pwd";
+             }
+             else*/
+//</editor-fold>
        try {
             pwd = driver.findElement(By.cssSelector("input[type='password']"));
-              List<WebElement> inputFields = driver.findElements(By.tagName("input"));
-        System.out.println("Total inputfields are " + inputFields.size());
-        for (int i = 0; i < inputFields.size(); i++) {
-            try {
-                if (!(inputFields.get(i).getAttribute("name").isEmpty())) {
-                    id = inputFields.get(i).getAttribute("name");
-                    textElement = driver.findElement(By.name(id));
-                } else {
-                    if (!inputFields.get(i).getAttribute("id").isEmpty()) {
-                        id = inputFields.get(i).getAttribute("id");
-                        textElement = driver.findElement(By.id(id));
-                    } else {
-                        if (!inputFields.get(i).getAttribute("class").isEmpty()) {
-                            id = inputFields.get(i).getAttribute("class");
-                            textElement = driver.findElement(By.className(id));
-                        }
-                    }
-                }
-                if (textElement.isDisplayed()) {
-                    if (pwd.equals(textElement)) {
-                        if(id.equalsIgnoreCase(pwdAttribute))
-                        {
-                          //  System.out.println("The webpage is genuine and is safe to visit");
-                            URLHeuristicScore mainObj=new URLHeuristicScore();
-                             URLHeuristicScore=mainObj.URLScoreInterface(driver,secondPageURL);
-                            driver.quit();
-                            if(URLHeuristicScore!=1)
-                            status=false;
-                            break;
-                        }
-                    }
-                    status=true;
-                }
-            } catch (Exception e) {
-                System.out.println(e);
+            if(pwd.isDisplayed())
+            {
+                status=false;
+                URLHeuristicScore=mainObj.URLScoreInterface(driver,secondPageURL);
+                 driver.quit();
+            if(URLHeuristicScore!=1)
+            status=false;
+            else status=true;
             }
-        }
+            //<editor-fold defaultstate="collapsed" desc="comment">
+            /*         List<WebElement> inputFields = driver.findElements(By.tagName("input"));
+            System.out.println("Total inputfields are " + inputFields.size());
+            for (int i = 0; i < inputFields.size(); i++) {
+            try {
+            if (!(inputFields.get(i).getAttribute("name").isEmpty())) {
+            id = inputFields.get(i).getAttribute("name");
+            textElement = driver.findElement(By.name(id));
+            } else {
+            if (!inputFields.get(i).getAttribute("id").isEmpty()) {
+            id = inputFields.get(i).getAttribute("id");
+            textElement = driver.findElement(By.id(id));
+            } else {
+            if (!inputFields.get(i).getAttribute("class").isEmpty()) {
+            id = inputFields.get(i).getAttribute("class");
+            textElement = driver.findElement(By.className(id));
+            }
+            }
+            }
+            if (textElement.isDisplayed()) {
+            if (pwd.equals(textElement)) {
+            if(id.equalsIgnoreCase(pwdAttribute))
+            {
+            //  System.out.println("The webpage is genuine and is safe to visit");
+            
+            URLHeuristicScore=mainObj.URLScoreInterface(driver,secondPageURL);
+            driver.quit();
+            if(URLHeuristicScore!=1)
+            status=false;
+            break;
+            }
+            }
+            status=true;
+            }
+            } catch (Exception e) {
+            System.out.println(e);
+            }
+            }*/
+//</editor-fold>
         } catch (NoSuchElementException e) {
            // System.out.println("no password field in second page");
             System.out.println("the webpage is phish as pwd field is not in second page ");
             driver.quit();
             return "the webpage is phish as pwd field is not in second page ";
-        }
+        }    catch (URISyntaxException ex) {
+                 Logger.getLogger(SecondPage.class.getName()).log(Level.SEVERE, null, ex);
+             }
      }
          else
          {
