@@ -31,6 +31,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.CapabilityType;
 
@@ -140,12 +141,18 @@ driver = new FirefoxDriver(dc);
     public void Screenshot(WebDriver driver){
         v0="null";
         v1 = "null";
+        try {
         TakesScreenshot ts = (TakesScreenshot)driver;
         File imgsrc=ts.getScreenshotAs(OutputType.FILE);
-        try {
+        
             FileUtils.copyFile(imgsrc, new File("C:\\Users\\srinivas\\Documents\\NetBeansProjects\\HeadLessBrowserTesting\\Screenshots\\"+(++index)+".png"));
         } catch (IOException ex) {
             Logger.getLogger(MainInterface.class.getName()).log(Level.SEVERE, null, ex);
         } 
+        // some websites screenshots are not been taken by websriver --media.tumblr.com
+        catch(WebDriverException y)
+        {
+            System.out.println(y);
+        }
     }
 }

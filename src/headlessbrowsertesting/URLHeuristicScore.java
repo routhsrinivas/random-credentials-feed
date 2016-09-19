@@ -6,11 +6,15 @@
 package headlessbrowsertesting;
 
 import com.google.common.net.InternetDomainName;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -216,8 +220,16 @@ public class URLHeuristicScore {
          String anchorlink="";
          float URLPatternMatchingScore=-1;
          String websiteIdentityAnchors="";
+         URL url=null;
+        try {
+            url = new URL(URL);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(URLHeuristicScore.class.getName()).log(Level.SEVERE, null, ex);
+        }
+String path = url.getFile().substring(0, url.getFile().lastIndexOf('/'));
+String base = url.getProtocol() + "://" + url.getHost() + path;
          String pageSource=driver.getPageSource();
-         Document doc=Jsoup.parse(pageSource);
+         Document doc=Jsoup.parse(pageSource,base);
         // String pageSource=driver.getPageSource();
         // System.out.println("Source code is: \n"+pageSource);
         List<WebElement> links = driver.findElements(By.cssSelector("a[href]"));

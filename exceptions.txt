@@ -1,0 +1,69 @@
+exception 1:
+https://www.aliexpress.com/ is a shopping website which has many number of links but no pwd fields hence taking too much time to finish execution of program
+
+"main" org.openqa.selenium.WebDriverException: Element is not clickable at point (1477.2666015625, 151). Other element would receive the click: <div style="position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 999; display: block; opacity: 0.2; background-color: rgb(0, 0, 0);" class="ui-mask" data-widget-cid="widget-0"></ throwing an exception
+bcos popup or modal window not allowing to click that signin button hence these kind of exceptions are to be dealt
+
+rakuten.co.jp error
+
+InvalidElementStateException: Element is disabled and so may not be used for actions
+etsy.com
+
+.StaleElementReferenceException: Element not found in the cache - perhaps the page has changed since it was looked up
+Command duration or timeout: 10.10 seconds
+hulu.com
+
+
+org.apache.http.impl.execchain.RetryExec execute
+INFO: I/O exception (java.net.SocketException) caught when processing request to {}->http://127.0.0.1:7055: Permission denied: connect
+onedio.com 
+icicibank.com
+pinimg.com
+webmd.com
+ebay.it
+expedia.com
+rt.com
+google.by
+
+org.openqa.selenium.WebDriverException: Element is not clickable at point (1393.7333984375, 19). Other element would receive the click: <form action="/app/subscriptions/" method="post" id="email_zip" onsubmit="return false"></form>
+groupon.com 
+
+Permission denied to access property "_section"
+speedtest website
+
+
+org.openqa.selenium.WebDriverException: Could not take screenshot of current page - TypeError: d.style is undefined
+http://media.tumblr.com/
+
+
+screenshot 111 did not add pwd field but added email
+
+
+org.openqa.selenium.UnhandledAlertException: Modal dialog present: Invalid Username/Password
+Build info: version: '2.53.1', revision: 'a36b8b1', time: '2016-06-30 17:32:46'
+moneycontrol.com
+
+
+ org.openqa.selenium.UnhandledAlertException: Modal dialog present: A script on this page may be busy, or it may have stopped responding. You can stop the script now, open the script in the debugger, or let the script continue.
+ http://www.adp.com/
+ 
+ 
+ 
+ emol.com, http://www.panda.tv/
+ abcnews.go.com these websites made our app into infinite loop due to continuous reloading
+ 
+ 
+  org.openqa.selenium.NoSuchElementException: Element was not in a form so couldn't submit
+ https://www.squarespace.com/login
+ 
+ 
+Exception in thread "main" org.openqa.selenium.NoSuchElementException: Element was not in a form so couldn't submit
+Command duration or timeout: 10.12 seconds 
+ https://www.rottentomatoes.com/
+ 
+ 
+ 
+  org.openqa.selenium.NoSuchElementException: Element was not in a form so couldn't submit
+Command duration or timeout: 10.07 seconds
+acfun.tv/login/
+as there is alink button not form button , exception is thrown on submit function

@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -62,15 +63,33 @@ public class SecondPage {
              else*/
 //</editor-fold>
        try {
-            pwd = driver.findElement(By.cssSelector("input[type='password']"));
-            if(pwd.isDisplayed())
-            {
-                status=false;
+           List<WebElement> pwds = driver.findElements(By.cssSelector("input[type='password']"));
+            if(pwds.size()>0){
+                for(int k=0;k<pwds.size();k++){
+                    if(pwds.get(k).isDisplayed()){
+                        pwd=pwds.get(k);
+                        status=false;
                 URLHeuristicScore=mainObj.URLScoreInterface(driver,secondPageURL);
                  driver.quit();
             if(URLHeuristicScore!=1)
             status=false;
             else status=true;
+            break;
+                    }
+                   }
+            }
+           // pwd = driver.findElement(By.cssSelector("input[type='password']"));
+            /*  if(pwd.isDisplayed())
+            {
+            status=false;
+            URLHeuristicScore=mainObj.URLScoreInterface(driver,secondPageURL);
+            driver.quit();
+            if(URLHeuristicScore!=1)
+            status=false;
+            else status=true;
+            }*/
+            if(pwds.size()==0){
+                pwd=driver.findElement(By.cssSelector("input[type='addingthistexttoentertocatch']"));
             }
             //<editor-fold defaultstate="collapsed" desc="comment">
             /*         List<WebElement> inputFields = driver.findElements(By.tagName("input"));
@@ -119,7 +138,9 @@ public class SecondPage {
         }    catch (URISyntaxException ex) {
                  Logger.getLogger(SecondPage.class.getName()).log(Level.SEVERE, null, ex);
              }
+     
      }
+         
          else
          {
              System.out.println("phishing because of first page and second page primary domain conflict");
